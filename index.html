@@ -21,4 +21,17 @@ function demoReply(text){const t=text.toLowerCase();if(/^(hi|hello|hey|yo)\b/.te
 function showTyping(){const row=document.createElement('div');row.className='message';row.id='typing';const a=document.createElement('div');a.className='avatar';a.textContent='A';const b=document.createElement('div');b.className='bubble';b.innerHTML='<div class="typing" aria-label="PlayA is thinking"><i></i><i></i><i></i></div>';row.append(a,b);messages.appendChild(row);scrollBottom();return row}
 function submitText(value){const text=(value??input.value).trim();if(!text||busy)return;welcome.hidden=true;addMessage('user',text);input.value='';input.style.height='auto';busy=true;send.disabled=true;const typing=showTyping();setTimeout(()=>{typing.remove();addMessage('assistant',demoReply(text));busy=false;send.disabled=false;input.focus()},450+Math.min(text.length*8,700))}
 $('#form').addEventListener('submit',e=>{e.preventDefault();submitText()});input.addEventListener('input',()=>{input.style.height='auto';input.style.height=Math.min(input.scrollHeight,140)+'px';send.disabled=!input.value.trim()||busy});input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submitText()}});document.querySelectorAll('[data-prompt]').forEach(b=>b.addEventListener('click',()=>submitText(b.dataset.prompt)));function reset(){messages.replaceChildren();welcome.hidden=false;input.value='';input.style.height='auto';send.disabled=true;input.focus()}$('#newChat').addEventListener('click',reset);$('#mobileNew').addEventListener('click',reset);send.disabled=true;
-</script></body></html>
+</script>
+  
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .catch(error => console.error(
+        "PlayA service worker failed:", error
+      ));
+  });
+}
+</script>
+
+</body></html>
